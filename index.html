@@ -114,8 +114,6 @@
 </li>
 <li><p>初始化Blog代码<code>$ hexo init blog</code>,稍微等待一会，加载速度比较慢，提示成功后会在G:\GitHub\Blog下生成几个文件夹和文件<br><br>  <img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101094722.png" alt="hexo初始化"></p>
 </li>
-<li><p>为了能让git关联此文件的内容需要执行git 初始化命令<code>git init</code></p>
-</li>
 <li><p>配置Blog的配置文件_config.yml文件，修改参数信息，以便以后每次新建内容的时候带出一些预设值，和能mapping上我们的github（<strong>特别提醒，在每个参数的：后都要加一个空格</strong>）</p>
 <ol>
 <li>修改Blog的标题和作者信息</li>
@@ -137,16 +135,27 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo generate</span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="5-推送至Github的资源仓库"><a href="#5-推送至Github的资源仓库" class="headerlink" title="5. 推送至Github的资源仓库"></a>5. 推送至Github的资源仓库</h2><ol start="8">
+<h2 id="5-推送至Github的资源仓库"><a href="#5-推送至Github的资源仓库" class="headerlink" title="5. 推送至Github的资源仓库"></a>5. 推送至Github的资源仓库</h2><ol>
 <li>本地编译成功后推送到Github的资源仓库中去 （<strong>如果在执行 hexo deploy 后,出现 error deployer not found:github 的错误<code>npm install hexo-deployer-git --save</code></strong>）</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101102411.png" alt="推送内容到github"></p>
+<p><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101102411.png" alt="推送内容到github"><br>至此，就可以直接用<a href="https://jackychen88.github.io" target="_blank" rel="noopener">https://jackychen88.github.io</a> 这个url访问blog了</p>
+<h2 id="5-推送Blog源码到Github资源库"><a href="#5-推送Blog源码到Github资源库" class="headerlink" title="5. 推送Blog源码到Github资源库"></a>5. 推送Blog源码到Github资源库</h2><ol>
+<li>为了能在不同电脑上都能方便的去发布Blog，可以将Blog的源码也推送到Github上去，主要有以下几个步骤<ol>
+<li>github上创建blog源码的资源库</li>
+<li>在本地使用<code>git init</code>来跟踪源码文件夹下的所有文件</li>
+<li><code>git add .</code>增加文件</li>
+<li><code>git commit -m &quot;提交描述&quot;</code>来commit修改</li>
+<li><code>git remote add blog https://github.com/Jackychen88/Blog.git</code>来添加访问资源库的链接，注意blog可以自己命名</li>
+<li><code>git push blog master</code> 推送次文件夹内容到github对应仓库，注意若推送失败尝试先获取罪行github的资源仓内容<code>git pull blog master</code></li>
+</ol>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/01/如何使用Github-Hexo搭建个人博客/" data-id="cjqd4w2iv0000uwtaaeo8mpp1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/01/如何使用Github-Hexo搭建个人博客/" data-id="cjqd5a5ic0001h8taufvxvqek" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Github-Hexo/">Github,Hexo</a></li></ul>
@@ -185,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/31/第一篇博客/" data-id="cjqd4w2j00001uwtai2zvjahw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/31/第一篇博客/" data-id="cjqd5a5i70000h8tarfrinfs2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -230,7 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/31/hello-world/" data-id="cjqd4w2jf0004uwtakucb13ws" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/31/hello-world/" data-id="cjqd5a5ie0002h8tael3eh0o9" class="article-share-link">Share</a>
       
       
     </footer>
