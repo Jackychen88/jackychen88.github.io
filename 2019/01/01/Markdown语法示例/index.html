@@ -5,15 +5,22 @@
   
 
   
-  <title>Jacky&#39;s Blog</title>
+  <title>Markdown语法示例 | Jacky&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jacky&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="目录 [TOC] 脚注 代码 123《十一种孤独》[^3]是一本描写低端人口[^1]xxx[^3]: 一本书名[^1]: 低端人口  效果《十一种孤独》^3是一本描写低端人口^1xxx    字符样式 代码 1234567- [ ] 注意前中后的空格- [x] 有时候不是很方便- [] ~~像这样~~- [ ] ~~应该是这样~~&amp;lt;br&amp;gt;*&amp;amp;nbsp;&amp;amp;nbsp;斜体字">
+<meta name="keywords" content="markdown">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown语法示例">
+<meta property="og:url" content="http://yoursite.com/2019/01/01/Markdown语法示例/index.html">
 <meta property="og:site_name" content="Jacky&#39;s Blog">
+<meta property="og:description" content="目录 [TOC] 脚注 代码 123《十一种孤独》[^3]是一本描写低端人口[^1]xxx[^3]: 一本书名[^1]: 低端人口  效果《十一种孤独》^3是一本描写低端人口^1xxx    字符样式 代码 1234567- [ ] 注意前中后的空格- [x] 有时候不是很方便- [] ~~像这样~~- [ ] ~~应该是这样~~&amp;lt;br&amp;gt;*&amp;amp;nbsp;&amp;amp;nbsp;斜体字">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img3.douban.com/mpic/s1108264.jpg">
+<meta property="og:updated_time" content="2019-01-01T02:55:53.100Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jacky&#39;s Blog">
+<meta name="twitter:title" content="Markdown语法示例">
+<meta name="twitter:description" content="目录 [TOC] 脚注 代码 123《十一种孤独》[^3]是一本描写低端人口[^1]xxx[^3]: 一本书名[^1]: 低端人口  效果《十一种孤独》^3是一本描写低端人口^1xxx    字符样式 代码 1234567- [ ] 注意前中后的空格- [x] 有时候不是很方便- [] ~~像这样~~- [ ] ~~应该是这样~~&amp;lt;br&amp;gt;*&amp;amp;nbsp;&amp;amp;nbsp;斜体字">
+<meta name="twitter:image" content="http://img3.douban.com/mpic/s1108264.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Jacky&#39;s Blog" type="application/atom+xml">
   
@@ -64,115 +71,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Markdown时序图示例" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/01/Markdown时序图示例/" class="article-date">
-  <time datetime="2019-01-01T02:56:51.000Z" itemprop="datePublished">2019-01-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/01/Markdown时序图示例/">Markdown时序图示例</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>[TOC]</p>
-<h1 id="序列图-sequence-diagram"><a href="#序列图-sequence-diagram" class="headerlink" title="序列图(sequence diagram)"></a>序列图(sequence diagram)</h1><h2 id="时序图解读"><a href="#时序图解读" class="headerlink" title="时序图解读"></a>时序图解读</h2><p>时序图（Sequence Diagram）是显示对象之间交互的图，这些对象是按时间顺序排列的。顺序图中显示的是参与交互的对象及其对象之间消息交互的顺序。时序图中包括的建模元素主要有：对象（Actor）、生命线（Lifeline）、控制焦点（Focus of control）、消息（Message）等等</p>
-<ul>
-<li>角色（Actor）<ul>
-<li>系统角色，可以是人、及其甚至其他的系统或者子系统。</li>
-</ul>
-</li>
-<li>对象（Object）<ul>
-<li>对象包括三种命名方式：<ul>
-<li>第一种方式包括对象名和类名；</li>
-<li>第二中方式只显示类名不显示对象名，即表示他是一个匿名对象；</li>
-<li>第三种方式只显示对象名不显示类明。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>生命线（Lifeline）<ul>
-<li>生命线在顺序图中表示为从对象图标向下延伸的一条虚线，表示对象存在的时间</li>
-</ul>
-</li>
-<li>控制焦点（Focus of Control）<ul>
-<li>控制焦点是顺序图中表示时间段的符号，在这个时间段内对象将执行相应的操作。用小矩形表示</li>
-</ul>
-</li>
-<li>消息（Message）<ul>
-<li>消息一般分为三种<ul>
-<li>同步消息（Synchronous Message）：消息的发送者把控制传递给消息的接收者，然后停止活动，等待消息的接收者放弃或者返回控制。用来表示同步的意义。（就是程序中的调用）</li>
-<li>异步消息（Asynchronous Message）：消息发送者通过消息把信号传递给消息的接收者，然后继续自己的活动，不等待接受者返回消息或者控制。异步消息的接收者和发送者是并发工作的。（就是程序中发消息给消息队列的操作）</li>
-<li>返回消息（Return Message）：返回消息表示从过程调用返回</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="简单sample"><a href="#简单sample" class="headerlink" title="简单sample"></a>简单sample</h2><ul>
-<li><strong>代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>sequenceDiagram<br>　　Alice-&gt;&gt;John: Hello John, how are you ?<br>　　John–&gt;&gt;Alice: Great!<br>　　Alice-&gt;&gt;John: Hung,you are better .<br>　　John–&gt;&gt;Alice: yeah, Just not bad.<br><code>+`</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ **效果**&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
-<p>sequenceDiagram<br>　　Alice-&gt;&gt;John: Hello John, how are you ?<br>　　John–&gt;&gt;Alice: Great!<br>　　Alice-&gt;&gt;John: Hung,you are better .<br>　　John–&gt;&gt;Alice: yeah, Just not bad.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"></span><br><span class="line">## 控制对象的顺序(通过设定参与者(participant)的顺序)</span><br><span class="line">+ **代码**&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
-<p>+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">　　participant John</span><br><span class="line">　　participant Alice</span><br><span class="line">　　Alice-&gt;&gt;John: Hello John, how are you ?</span><br><span class="line">　　John--&gt;&gt;Alice: Great!</span><br><span class="line">　　Alice-&gt;&gt;John: Hung,you are better .</span><br><span class="line">　　John--&gt;&gt;Alice: yeah, Just not bad.</span><br><span class="line">`+``</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><strong>效果</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">　　participant John</span><br><span class="line">　　participant Alice</span><br><span class="line">　　Alice-&gt;&gt;John: Hello John, how are you ?</span><br><span class="line">　　John--&gt;&gt;Alice: Great!</span><br><span class="line">　　Alice-&gt;&gt;John: Hung,you are better .</span><br><span class="line">　　John--&gt;&gt;Alice: yeah, Just not bad.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<hr>
-<h2 id="实线或者虚线的使用"><a href="#实线或者虚线的使用" class="headerlink" title="实线或者虚线的使用"></a>实线或者虚线的使用</h2><ul>
-<li><strong>代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>sequenceDiagram<br>    Alice-&gt;John:连接线<br>    John–&gt;Alice:返回连接线<br>    Alice-&gt;&gt;John: 发送同步调用消息<br>    John–&gt;&gt;Alice:返回同步消息<br>    Alice-xJohn: 发送异步调用消息<br>    John–xAlice: 返回异步消息<br>+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">+ **效果**&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
-<p>sequenceDiagram<br>    Alice-&gt;John:连接线<br>    John–&gt;Alice:返回连接线<br>    Alice-&gt;&gt;John: 发送同步调用消息<br>    John–&gt;&gt;Alice:返回同步消息<br>    Alice-xJohn: 发送异步调用消息<br>    John–xAlice: 返回异步消息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">标记分类</span><br><span class="line">- 代表实线 ， 主动发送消息，比如 request请求</span><br><span class="line">&gt; 代表实心箭头 ， 同步消息，比如 AJAX 的同步请求</span><br><span class="line">&gt; -- 代表虚线，表示返回消息，spring Controller return</span><br><span class="line">&gt;</span><br><span class="line">&gt; &gt; 代表非实心箭头 ，异步消息，比如AJAX请求</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 便签</span><br><span class="line">+ **代码**&lt;br&gt;</span><br><span class="line">  具体规则</span><br><span class="line">  &lt;font color = red&gt;Note&lt;/font&gt; [right of | left of ]&lt;font color = red&gt; 对象:&lt;/font&gt;文本</span><br></pre></td></tr></table></figure>
-<p>+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">　　participant John</span><br><span class="line">　　Note left of John: Text in note</span><br><span class="line">+</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ **效果**&lt;br&gt;</span><br></pre></td></tr></table></figure>
-<p>sequenceDiagram<br>　　participant John<br>　　Note left of John: Text in note<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 跨越两个Actor的便签</span><br><span class="line">+ **代码**&lt;br&gt;</span><br><span class="line">  具体规则</span><br><span class="line">  &lt;font color = red&gt;Note&lt;/font&gt; [over]&lt;font color = red&gt; 对象A,对象B:&lt;/font&gt;文本</span><br></pre></td></tr></table></figure></p>
-<p>+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">Alice-&gt;&gt;John:Hello John, how are you?</span><br><span class="line">Note over Alice,John:A typical interaction</span><br><span class="line">+</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ **效果**&lt;br&gt;</span><br></pre></td></tr></table></figure>
-<p>sequenceDiagram<br>Alice-&gt;&gt;John:Hello John, how are you?<br>Note over Alice,John:A typical interaction<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"></span><br><span class="line">## 循环Loops</span><br><span class="line">+ **代码**&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
-<p>+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">　　Alice-&gt;&gt;John: Hello!</span><br><span class="line">　　loop 循环逻辑</span><br><span class="line">　　　　John-&gt;&gt;Alice:Great!</span><br><span class="line">　　end</span><br><span class="line">+</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ **效果**&lt;br&gt;</span><br></pre></td></tr></table></figure>
-<p>sequenceDiagram<br>　　Alice-&gt;&gt;John: Hello!<br>　　loop 循环逻辑<br>　　　　John-&gt;&gt;Alice:Great!<br>　　end<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"></span><br><span class="line">## 选择ALT</span><br><span class="line">+ **代码**&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
-<p>+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">　　Alice-&gt;&gt;Bob: are you OK?</span><br><span class="line">　　alt not well</span><br><span class="line">　　　　Bob-&gt;&gt;Alice:not so good :(</span><br><span class="line">　　else is OK</span><br><span class="line">　　　　Bob-&gt;&gt;Alice:Feeling fresh like a daisy:)</span><br><span class="line">　　end</span><br><span class="line">+</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ **效果**&lt;br&gt;</span><br></pre></td></tr></table></figure>
-<p>sequenceDiagram<br>　　Alice-&gt;&gt;Bob: are you OK?<br>　　alt not well<br>　　　　Bob-&gt;&gt;Alice:not so good :(<br>　　else is OK<br>　　　　Bob-&gt;&gt;Alice:Feeling fresh like a daisy:)<br>　　end<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"></span><br><span class="line">## 可选opt</span><br><span class="line">+ **代码**&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
-<p>+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">　　Alice-&gt;&gt;Bob: Hello Bob, how are you?</span><br><span class="line">　　opt Extra response</span><br><span class="line">　　　　Bob--&gt;&gt;Alice:Thanks for asking</span><br><span class="line">　　end</span><br><span class="line">+</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ **效果**&lt;br&gt;</span><br></pre></td></tr></table></figure>
-<p>sequenceDiagram<br>　　Alice-&gt;&gt;Bob: Hello Bob, how are you?<br>　　opt Extra response<br>　　　　Bob–&gt;&gt;Alice:Thanks for asking<br>　　end</p>
-<h2 id=""><a href="#" class="headerlink" title="`"></a><code>`</code></h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/01/Markdown时序图示例/" data-id="cjqd5wzoj0002awtas2ycfvem" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Markdown语法示例" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-Markdown语法示例" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/01/Markdown语法示例/" class="article-date">
   <time datetime="2019-01-01T02:55:21.000Z" itemprop="datePublished">2019-01-01</time>
@@ -185,8 +84,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/01/Markdown语法示例/">Markdown语法示例</a>
+    <h1 class="article-title" itemprop="name">
+      Markdown语法示例
     </h1>
   
 
@@ -296,149 +195,28 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-如何使用Github-Hexo搭建个人博客" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/01/如何使用Github-Hexo搭建个人博客/" class="article-date">
-  <time datetime="2019-01-01T01:27:00.000Z" itemprop="datePublished">2019-01-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <a href="/2019/01/01/Markdown时序图示例/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/01/如何使用Github-Hexo搭建个人博客/">如何使用Github+Hexo搭建个人博客</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>[TOC]</p>
-<h2 id="1-需要安装的软件"><a href="#1-需要安装的软件" class="headerlink" title="1. 需要安装的软件"></a>1. 需要安装的软件</h2><ol>
-<li>安装 Node.js <a href="https://nodejs.org/en/" target="_blank" rel="noopener">下载Node.js</a></li>
-<li>安装 Git <a href="https://github.com/waylau/git-for-win" target="_blank" rel="noopener">下载Git</a></li>
-<li>安装Hexo，1和2装完成后，即可使用 npm 安装 Hexo。<code>$ npm install -g hexo-cli</code></li>
-</ol>
-<h2 id="2-Git配置"><a href="#2-Git配置" class="headerlink" title="2. Git配置"></a>2. Git配置</h2><ol>
-<li>配置Github的账号和密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;jackychen88&quot;</span><br><span class="line">$ git config --global user.email &quot;chenlongxxxx@126.com&quot;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101093448.png" alt="Git Bash配置账号"></p>
-<h2 id="3-配置Github的repositories"><a href="#3-配置Github的repositories" class="headerlink" title="3. 配置Github的repositories"></a>3. 配置Github的repositories</h2><ol>
-<li>新建Github网站资源库<br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101101148.png" alt="创建Github的网站资源库"></li>
-<li>重命名资源库名，以后次名字可以直接通过url来访问<br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101101352.png" alt="配置Github的资源库名"></li>
-<li>配置Github Pages<br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101101619.png" alt="配置Github Pages"></li>
-</ol>
-<ol start="4">
-<li>获取网页部署url,下面步骤的配置文件_config.yml文件中配置的网址<br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101101817.png" alt="取网页部署url"></li>
-</ol>
-<h2 id="4-设定本地电脑Blog文件源码仓库"><a href="#4-设定本地电脑Blog文件源码仓库" class="headerlink" title="4. 设定本地电脑Blog文件源码仓库"></a>4. 设定本地电脑Blog文件源码仓库</h2><ol>
-<li><p>在任意磁盘处新建一个空文件夹作为我们Blog的代码仓库，例如G:\GitHub\Blog</p>
-</li>
-<li><p>在G:\GitHub\Blog里右键选择Git Bash here进入Git 命令输入界面</p>
-</li>
-<li><p>初始化Blog代码<code>$ hexo init blog</code>,稍微等待一会，加载速度比较慢，提示成功后会在G:\GitHub\Blog下生成几个文件夹和文件<br><br>  <img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101094722.png" alt="hexo初始化"></p>
-</li>
-<li><p>配置Blog的配置文件_config.yml文件，修改参数信息，以便以后每次新建内容的时候带出一些预设值，和能mapping上我们的github（<strong>特别提醒，在每个参数的：后都要加一个空格</strong>）</p>
-<ol>
-<li>修改Blog的标题和作者信息</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: Jacky&apos;s Blog</span><br><span class="line">subtitle: Programer for ABAP</span><br><span class="line">description: </span><br><span class="line">keywords:</span><br><span class="line">author: Jacky chen</span><br><span class="line">language: zh-CN</span><br><span class="line">timezone: Asia/Shanghai</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>new_post_name每次新建时的md文件名，带出年月日一边管理</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">new_post_name: :year-:month-:day-:title.md # File name of new posts</span><br><span class="line">default_layout: post</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>deploy 用来关联hexo deploy时推送到github的资源仓链接（上面创建github的网址）</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/Jackychen88/jackychen88.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>发表博客文章，使用下面命令后会在G:\GitHub\Blog\source_posts下自动生产一个md文件,生成后可自行修改md的内容，其实就是在更新Blog内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new &quot;如何使用Github+Hexo搭建个人博客&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>编译并测试Blog是否能在本地运行,运行完下面命令后可以在<a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 中查看Blog是否正常运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo generate</span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="5-推送至Github的资源仓库"><a href="#5-推送至Github的资源仓库" class="headerlink" title="5. 推送至Github的资源仓库"></a>5. 推送至Github的资源仓库</h2><ol>
-<li>本地编译成功后推送到Github的资源仓库中去 （<strong>如果在执行 hexo deploy 后,出现 error deployer not found:github 的错误<code>npm install hexo-deployer-git --save</code></strong>）</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190101102411.png" alt="推送内容到github"><br>至此，就可以直接用<a href="https://jackychen88.github.io" target="_blank" rel="noopener">https://jackychen88.github.io</a> 这个url访问blog了</p>
-<h2 id="5-推送Blog源码到Github资源库"><a href="#5-推送Blog源码到Github资源库" class="headerlink" title="5. 推送Blog源码到Github资源库"></a>5. 推送Blog源码到Github资源库</h2><ol>
-<li>为了能在不同电脑上都能方便的去发布Blog，可以将Blog的源码也推送到Github上去，主要有以下几个步骤<ol>
-<li>github上创建blog源码的资源库</li>
-<li>在本地使用<code>git init</code>来跟踪源码文件夹下的所有文件</li>
-<li><code>git add .</code>增加文件</li>
-<li><code>git commit -m &quot;提交描述&quot;</code>来commit修改</li>
-<li><code>git remote add blog https://github.com/Jackychen88/Blog.git</code>来添加访问资源库的链接，注意blog可以自己命名</li>
-<li><code>git push blog master</code> 推送次文件夹内容到github对应仓库，注意若推送失败尝试先获取罪行github的资源仓内容<code>git pull blog master</code></li>
-</ol>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/01/如何使用Github-Hexo搭建个人博客/" data-id="cjqd5wzoh0001awtasntsdrsi" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Github-Hexo/">Github,Hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-第一篇博客" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/31/第一篇博客/" class="article-date">
-  <time datetime="2018-12-31T15:58:21.000Z" itemprop="datePublished">2018-12-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+          Markdown时序图示例
         
+      </div>
+    </a>
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/31/第一篇博客/">第一篇博客</a>
-    </h1>
   
+    <a href="/2019/01/01/如何使用Github-Hexo搭建个人博客/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">如何使用Github+Hexo搭建个人博客</div>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>折腾了半天，个人博客终于搭建成功了，为表庆祝，放上女儿的靓照<img src="https://raw.githubusercontent.com/Jackychen88/Blog/master/source/_posts/2018-12-31-%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2.assets/1546272001337.png" alt="1546272001337"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/31/第一篇博客/" data-id="cjqd5wzod0000awta8c4iy7m1" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         
