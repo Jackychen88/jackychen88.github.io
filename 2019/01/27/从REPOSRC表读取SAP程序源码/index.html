@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ABAP,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="思考SAP 有标准的关键key READ REPORT来获取程序的源码，但我很好奇这个key底层是如何工作的，很好奇SAP到底是以何种方式来保存源码的，因此有以下的调查 数据库首先想到肯定SAP是把代码存放在数据库的，不管是加密的，压缩的，还是编译的肯定需要DB存储的。通过各种方法找到了源码疑似存放的数据库  REPOSRC :DATA栏位存放了代码压缩后的二进制数据 REPOLOAD:LDATA">
+<meta name="keywords" content="ABAP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从REPOSRC表读取SAP程序源码">
+<meta property="og:url" content="https://jackychen88.github.io/2019/01/27/从REPOSRC表读取SAP程序源码/index.html">
+<meta property="og:site_name" content="Jacky&#39;s Blog">
+<meta property="og:description" content="思考SAP 有标准的关键key READ REPORT来获取程序的源码，但我很好奇这个key底层是如何工作的，很好奇SAP到底是以何种方式来保存源码的，因此有以下的调查 数据库首先想到肯定SAP是把代码存放在数据库的，不管是加密的，压缩的，还是编译的肯定需要DB存储的。通过各种方法找到了源码疑似存放的数据库  REPOSRC :DATA栏位存放了代码压缩后的二进制数据 REPOLOAD:LDATA">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127094036.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127094133.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132150.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132321.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132435.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132826.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127133943.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127135302.png">
+<meta property="og:updated_time" content="2019-01-27T07:52:10.248Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从REPOSRC表读取SAP程序源码">
+<meta name="twitter:description" content="思考SAP 有标准的关键key READ REPORT来获取程序的源码，但我很好奇这个key底层是如何工作的，很好奇SAP到底是以何种方式来保存源码的，因此有以下的调查 数据库首先想到肯定SAP是把代码存放在数据库的，不管是加密的，压缩的，还是编译的肯定需要DB存储的。通过各种方法找到了源码疑似存放的数据库  REPOSRC :DATA栏位存放了代码压缩后的二进制数据 REPOLOAD:LDATA">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127094036.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackychen88.github.io/2019/01/27/从REPOSRC表读取SAP程序源码/">
+
+
+
+
+
+  <title>从REPOSRC表读取SAP程序源码 | Jacky's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0771aa82faec1e5a4e62740d4db9e879";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jacky's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Programer for ABAP</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackychen88.github.io/2019/01/27/从REPOSRC表读取SAP程序源码/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jacky chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jacky's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从REPOSRC表读取SAP程序源码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-27T15:51:16+08:00">
+                2019-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>SAP 有标准的关键key <strong>READ REPORT</strong>来获取程序的源码，但我很好奇这个key底层是如何工作的，很好奇SAP到底是以何种方式来保存源码的，因此有以下的调查</p>
+<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><p>首先想到肯定SAP是把代码存放在数据库的，不管是加密的，压缩的，还是编译的肯定需要DB存储的。通过各种方法找到了源码疑似存放的数据库</p>
+<ul>
+<li><strong>REPOSRC</strong> :DATA栏位存放了代码压缩后的二进制数据<br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127094036.png" alt="REPOSRC"></li>
+<li><strong>REPOLOAD</strong>:LDATA和QDATA分别存放了压缩后的编译代码二进制数据和未压缩的编译代码二进制<br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127094133.png" alt="REPOLOAD"></li>
+</ul>
+<h1 id="还原方法"><a href="#还原方法" class="headerlink" title="还原方法"></a>还原方法</h1><ol>
+<li>首先我判断出来REPOLOAD是SAP内部编译的数据，进行了解压转换编码处理后，得到的是编译代码，无法还原成我们能理解的ABAP语言（SAP原厂内部肯定能通过编译代码反编译源码，但SAP是不开放的）</li>
+<li>那么就考虑从REPOSRC的DATA栏位来还原代码吧，信息肯定保存在DATA栏位，并且肯定是压缩过的（毕竟栏位描述就叫Compressed）那么肯定有一个压缩算法</li>
+<li>通过bing查到了<a href="https://www.daniel-berlin.de/devel/sap-dev/decompress-abap-source-code/" target="_blank" rel="noopener">SAP源码压缩方式</a><ul>
+<li><code>The code stored in REPOSRC-DATA is actually compressed using the LZH algorithm (Lempel-Ziv plus Huffman coding), which is used by the SAP DB MaxDB database too</code></li>
+<li>Lempel-Ziv压缩方式具体是什么不清楚，好在外国大牛自己用C++写了个解压工具，我们直接拿来用就可以了</li>
+</ul>
+</li>
+<li>下载<a href="https://github.com/daberlin/sap-reposrc-decompressor/releases" target="_blank" rel="noopener">解压算法工具</a>，解压zip文件</li>
+<li>打开Visual Sudio（我的是2013），点击文件-&gt;新建-&gt;项目创建一个win32的控制台命令程序<br><br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132150.png" alt="创建一个win32的控制台命令程序"><br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132321.png" alt="空项目"></li>
+<li>在资源管理器的源文件中右键选中源文件，点击添加-&gt;现有项把刚才下载解压文件中的.cpp导入进去，然后在资源文件夹上右键同样导入刚才解压文件中lib的所有资源<br><br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132435.png" alt="导入解压工具"></li>
+<li>点击执行，生成exe执行文件,至此解压工具生成完毕，也可以直接<a href="https://www.daniel-berlin.de/wp-content/uploads/2015/08/sap-reposrc-decompressor-1.1.1.zip" target="_blank" rel="noopener">下载解压工具exe</a><br><br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127132826.png" alt="生成解压exe"></li>
+<li><p>将SAP数据库中的DATA栏位以二进制Bin的格式下载到本地文件中去，源码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">*&amp;---------------------------------------------------------------------*</span><br><span class="line">*&amp; Report ZS_REPOSRC_DOWNLOAD</span><br><span class="line">*&amp;---------------------------------------------------------------------*</span><br><span class="line">*&amp; Purpose: Download compressed source code from table REPOSRC</span><br><span class="line">*&amp; Author : Daniel Berlin</span><br><span class="line">*&amp; Version: 1.0.1</span><br><span class="line">*&amp; License: CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/)</span><br><span class="line">*&amp;---------------------------------------------------------------------*</span><br><span class="line"></span><br><span class="line">REPORT ZS_REPOSRC_DOWNLOAD.</span><br><span class="line"></span><br><span class="line">DATA: V_FNAM TYPE RLGRAP-FILENAME,  &quot; Local file name</span><br><span class="line">      V_FILE TYPE STRING,           &quot; Same, but as a string</span><br><span class="line">      V_XSTR TYPE XSTRING,          &quot; Source (compressed)</span><br><span class="line">      V_XLEN TYPE I,                &quot; Length of source</span><br><span class="line">      T_XTAB TYPE TABLE OF X255.    &quot; Source plugged into a table</span><br><span class="line"></span><br><span class="line">PARAMETERS: REPORT TYPE PROGNAME DEFAULT SY-REPID           &quot;#EC *</span><br><span class="line">                  MATCHCODE OBJECT PROGNAME OBLIGATORY.</span><br><span class="line"></span><br><span class="line">START-OF-SELECTION.</span><br><span class="line"></span><br><span class="line">  &quot; -- Select local file name</span><br><span class="line">  WHILE V_FNAM IS INITIAL.</span><br><span class="line">    V_FNAM = REPORT.</span><br><span class="line"></span><br><span class="line">    CALL FUNCTION &apos;NAVIGATION_FILENAME_HELP&apos;</span><br><span class="line">      EXPORTING</span><br><span class="line">        DEFAULT_PATH      = V_FNAM</span><br><span class="line">        MODE              = &apos;S&apos;</span><br><span class="line">      IMPORTING</span><br><span class="line">        SELECTED_FILENAME = V_FNAM.</span><br><span class="line">  ENDWHILE.</span><br><span class="line"></span><br><span class="line">  V_FILE = V_FNAM.</span><br><span class="line"></span><br><span class="line">  &quot; -- Fetch compressed source code</span><br><span class="line">  SELECT SINGLE DATA INTO V_XSTR FROM REPOSRC</span><br><span class="line">          WHERE PROGNAME = REPORT AND R3STATE = &apos;A&apos;.</span><br><span class="line"></span><br><span class="line">  V_XLEN = XSTRLEN( V_XSTR ).</span><br><span class="line"></span><br><span class="line">  &quot; -- Plug source into a table</span><br><span class="line">  CALL METHOD CL_SWF_UTL_CONVERT_XSTRING=&gt;XSTRING_TO_TABLE</span><br><span class="line">    EXPORTING</span><br><span class="line">      I_STREAM = V_XSTR</span><br><span class="line">    IMPORTING</span><br><span class="line">      E_TABLE  = T_XTAB</span><br><span class="line">    EXCEPTIONS</span><br><span class="line">      OTHERS   = 1.</span><br><span class="line"></span><br><span class="line">  &quot; -- Download to local file</span><br><span class="line">  CALL FUNCTION &apos;GUI_DOWNLOAD&apos;</span><br><span class="line">    EXPORTING</span><br><span class="line">      FILETYPE     = &apos;BIN&apos;</span><br><span class="line">      FILENAME     = V_FILE</span><br><span class="line">      BIN_FILESIZE = V_XLEN</span><br><span class="line">    TABLES</span><br><span class="line">      DATA_TAB     = T_XTAB</span><br><span class="line">    EXCEPTIONS</span><br><span class="line">      OTHERS       = 0.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将程序执行后获取到的文件放入解压exe工具同一个目录，Ctrl+R CMD打开命令行界面，CD至对应路径，运行以下代码后，会生成解压后的源码内容<br><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127133943.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">call &quot;%VS120COMNTOOLS%&quot;vsvars32.bat</span><br><span class="line">SAP_decompress.exe YTEST_JK76 YTEST_JK76.txt-u</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20190127135302.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ABAP/" rel="tag"># ABAP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/19/动态生成程序并执行/" rel="next" title="动态生成程序并执行">
+                <i class="fa fa-chevron-left"></i> 动态生成程序并执行
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Jacky chen">
+            
+              <p class="site-author-name" itemprop="name">Jacky chen</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tongji.baidu.com/sc-web" title="Baidu" target="_blank">Baidu</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#思考"><span class="nav-number">1.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库"><span class="nav-number">2.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#还原方法"><span class="nav-number">3.</span> <span class="nav-text">还原方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jacky chen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count"></span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  Total:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
