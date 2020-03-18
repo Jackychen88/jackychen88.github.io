@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ABAP,OO,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="[toc] 观察者模式当一个对象状态发生改变后，应该如何向其他相关的对象发送变化的通知呢？ 定义对象间的一对多的依赖关系，当一个对象（被观察者）的状态发生改变时，所有依赖于它的对象（观察者）都可以得到通知并执行相关动作 观察者模式将观察者和被观察者解耦，被观察者可以按照需求增加或者删除观察者，并能够将变化及时通知所有相关观察者 12345678910111213141516171819202122">
+<meta name="keywords" content="ABAP,OO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向对象设计模式-观察者模式">
+<meta property="og:url" content="https://jackychen88.github.io/2020/03/18/面向对象设计模式-观察者模式/index.html">
+<meta property="og:site_name" content="Jacky&#39;s Blog">
+<meta property="og:description" content="[toc] 观察者模式当一个对象状态发生改变后，应该如何向其他相关的对象发送变化的通知呢？ 定义对象间的一对多的依赖关系，当一个对象（被观察者）的状态发生改变时，所有依赖于它的对象（观察者）都可以得到通知并执行相关动作 观察者模式将观察者和被观察者解耦，被观察者可以按照需求增加或者删除观察者，并能够将变化及时通知所有相关观察者 12345678910111213141516171819202122">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20200227145833.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20200227144600.png">
+<meta property="og:updated_time" content="2020-03-18T02:25:59.878Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面向对象设计模式-观察者模式">
+<meta name="twitter:description" content="[toc] 观察者模式当一个对象状态发生改变后，应该如何向其他相关的对象发送变化的通知呢？ 定义对象间的一对多的依赖关系，当一个对象（被观察者）的状态发生改变时，所有依赖于它的对象（观察者）都可以得到通知并执行相关动作 观察者模式将观察者和被观察者解耦，被观察者可以按照需求增加或者删除观察者，并能够将变化及时通知所有相关观察者 12345678910111213141516171819202122">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Jackychen88/Picture/master/20200227145833.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackychen88.github.io/2020/03/18/面向对象设计模式-观察者模式/">
+
+
+
+
+
+  <title>面向对象设计模式-观察者模式 | Jacky's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0771aa82faec1e5a4e62740d4db9e879";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jacky's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Programer for ABAP</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackychen88.github.io/2020/03/18/面向对象设计模式-观察者模式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jacky chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jacky's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面向对象设计模式-观察者模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-18T10:08:32+08:00">
+                2020-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[toc]</p>
+<h1 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h1><p>当一个对象状态发生改变后，应该如何向其他相关的对象发送变化的通知呢？</p>
+<p>定义对象间的一对多的依赖关系，当一个对象（被观察者）的状态发生改变时，所有依赖于它的对象（观察者）都可以得到通知并执行相关动作</p>
+<p>观察者模式将观察者和被观察者解耦，被观察者可以按照需求增加或者删除观察者，并能够将变化及时通知所有相关观察者</p>
+<p><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20200227145833.png" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line">class program &lt;&lt;call program&gt;&gt; </span><br><span class="line">abstract class ycl_trigger</span><br><span class="line">interface yif_listener</span><br><span class="line">class ycl_trigger_mgmt</span><br><span class="line">class ycl_listener_executor1</span><br><span class="line">class ycl_listener_executor2</span><br><span class="line"></span><br><span class="line">hide &lt;&lt;call program&gt;&gt; circle</span><br><span class="line">program --&gt; ycl_trigger</span><br><span class="line">ycl_trigger_mgmt --|&gt; ycl_trigger</span><br><span class="line">ycl_listener_executor1 ..|&gt; yif_listener</span><br><span class="line">ycl_listener_executor2 ..|&gt; yif_listener</span><br><span class="line">ycl_trigger ..&gt; yif_listener</span><br><span class="line"></span><br><span class="line">abstract class ycl_trigger&#123;</span><br><span class="line">- yif_listener[] mt_listeners </span><br><span class="line">--</span><br><span class="line">+ add_listener( yif_listener io_listener )</span><br><span class="line">| SET HANDLER IO_LISTENER-&gt;on_status_changed FOR ME. </span><br><span class="line">+ del_listener( yif_listener io_listener ) </span><br><span class="line">| SET HANDLER IO_LISTENER-&gt;on_status_changed FOR ME ACTIVE &apos; &apos;</span><br><span class="line">+ post_notice( raise event status_changed)</span><br><span class="line">== events ==</span><br><span class="line">status_changed</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ycl_trigger_mgmt&#123;</span><br><span class="line">- yif_listener[] mt_listeners </span><br><span class="line">--</span><br><span class="line">+ add_listener( yif_listener io_listener)</span><br><span class="line">+ del_listener( yif_listener io_listener) </span><br><span class="line">+ post_notice( 实际抛出通知 )</span><br><span class="line">== events ==</span><br><span class="line">status_changed</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface yif_listener&#123;</span><br><span class="line">- on_status_changed( 注册监听ycl_trigger-&gt;status_changed)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ycl_listener_executor1&#123;</span><br><span class="line">- on_status_changed( 执行监听后的逻辑 )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ycl_listener_executor2&#123;</span><br><span class="line">- on_status_changed( 执行监听后的逻辑 )</span><br><span class="line">&#125;</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure></p>
+<h1 id="CLASS-代码"><a href="#CLASS-代码" class="headerlink" title="CLASS 代码"></a>CLASS 代码</h1><h2 id="YCL-TRIGGER"><a href="#YCL-TRIGGER" class="headerlink" title="YCL_TRIGGER"></a>YCL_TRIGGER</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">class YCL_TRIGGER definition</span><br><span class="line">  public</span><br><span class="line">  abstract</span><br><span class="line">  create public</span><br><span class="line"></span><br><span class="line">  global friends YIF_LISTENER .</span><br><span class="line"></span><br><span class="line">public section.</span><br><span class="line"></span><br><span class="line">  methods ADD_LISTENER</span><br><span class="line">    importing</span><br><span class="line">      !IO_LISTENER type ref to YIF_LISTENER .</span><br><span class="line">  methods DEL_LISTENER</span><br><span class="line">    importing</span><br><span class="line">      value(IO_LISTENER) type ref to YIF_LISTENER .</span><br><span class="line">  methods POST_NOTICE .</span><br><span class="line">protected section.</span><br><span class="line">private section.</span><br><span class="line"></span><br><span class="line">  types:</span><br><span class="line">    BEGIN OF TY_LISTENER,</span><br><span class="line">      LO_LISTERNER TYPE REF TO YIF_LISTENER,</span><br><span class="line">    END OF TY_LISTENER .</span><br><span class="line">  types:</span><br><span class="line">    TTY_LISTENER TYPE STANDARD TABLE OF TY_LISTENER .</span><br><span class="line"></span><br><span class="line">  data MT_LISTENERS type TTY_LISTENER .</span><br><span class="line"></span><br><span class="line">  events STATUS_CHANGED .</span><br><span class="line">ENDCLASS.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CLASS YCL_TRIGGER IMPLEMENTATION.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_TRIGGER-&gt;ADD_LISTENER</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* | [---&gt;] IO_LISTENER                    TYPE REF TO YIF_LISTENER</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  METHOD ADD_LISTENER.</span><br><span class="line"></span><br><span class="line">    IF IO_LISTENER IS BOUND.</span><br><span class="line"></span><br><span class="line">      READ TABLE MT_LISTENERS TRANSPORTING NO FIELDS</span><br><span class="line">        WITH KEY LO_LISTERNER = IO_LISTENER.</span><br><span class="line">      IF SY-SUBRC NE 0.</span><br><span class="line">        APPEND INITIAL LINE TO MT_LISTENERS ASSIGNING FIELD-SYMBOL(&lt;FS_LISTENERS&gt;).</span><br><span class="line">        &lt;FS_LISTENERS&gt;-LO_LISTERNER = IO_LISTENER.</span><br><span class="line"></span><br><span class="line">        SET HANDLER IO_LISTENER-&gt;ON_STATUS_CHANGED FOR ME.</span><br><span class="line"></span><br><span class="line">      ENDIF.</span><br><span class="line">    ENDIF.</span><br><span class="line"></span><br><span class="line">  ENDMETHOD.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_TRIGGER-&gt;DEL_LISTENER</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* | [---&gt;] IO_LISTENER                    TYPE REF TO YIF_LISTENER</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  method DEL_LISTENER.</span><br><span class="line"></span><br><span class="line">    IF IO_LISTENER IS BOUND.</span><br><span class="line"></span><br><span class="line">      DELETE MT_LISTENERS WHERE LO_LISTERNER = IO_LISTENER.</span><br><span class="line"></span><br><span class="line">      SET HANDLER IO_LISTENER-&gt;ON_STATUS_CHANGED FOR ME ACTIVATION &apos; &apos;.</span><br><span class="line">    ENDIF.</span><br><span class="line"></span><br><span class="line">  endmethod.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_TRIGGER-&gt;POST_NOTICE</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  method POST_NOTICE.</span><br><span class="line"></span><br><span class="line">    RAISE EVENT STATUS_CHANGED.</span><br><span class="line"></span><br><span class="line">  endmethod.</span><br><span class="line">ENDCLASS.</span><br></pre></td></tr></table></figure>
+<h2 id="YIF-LISTENER"><a href="#YIF-LISTENER" class="headerlink" title="YIF_LISTENER"></a>YIF_LISTENER</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">interface YIF_LISTENER</span><br><span class="line">  public .</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  data MV_NAME type STRING .</span><br><span class="line"></span><br><span class="line">  methods ON_STATUS_CHANGED</span><br><span class="line">    for event STATUS_CHANGED of YCL_TRIGGER .</span><br><span class="line">endinterface.</span><br></pre></td></tr></table></figure>
+<h2 id="YCL-TRIGGER-MGMT"><a href="#YCL-TRIGGER-MGMT" class="headerlink" title="YCL_TRIGGER_MGMT"></a>YCL_TRIGGER_MGMT</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class YCL_TRIGGER_MGMT definition</span><br><span class="line">  public</span><br><span class="line">  inheriting from YCL_TRIGGER</span><br><span class="line">  final</span><br><span class="line">  create public .</span><br><span class="line"></span><br><span class="line">public section.</span><br><span class="line"></span><br><span class="line">  methods POST_NOTICE</span><br><span class="line">    redefinition .</span><br><span class="line">protected section.</span><br><span class="line">private section.</span><br><span class="line">ENDCLASS.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CLASS YCL_TRIGGER_MGMT IMPLEMENTATION.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_TRIGGER_MGMT-&gt;POST_NOTICE</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  METHOD POST_NOTICE.</span><br><span class="line"></span><br><span class="line">    WRITE:/ &apos;START被观察者发布通知开始&apos;.</span><br><span class="line"></span><br><span class="line">    SUPER-&gt;POST_NOTICE( ).</span><br><span class="line"></span><br><span class="line">    WRITE:/ &apos;END被观察者发布通知结束&apos;.</span><br><span class="line"></span><br><span class="line">  ENDMETHOD.</span><br><span class="line">ENDCLASS.</span><br></pre></td></tr></table></figure>
+<h2 id="YCL-LISTENER-EXECUTOR1"><a href="#YCL-LISTENER-EXECUTOR1" class="headerlink" title="YCL_LISTENER_EXECUTOR1"></a>YCL_LISTENER_EXECUTOR1</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">class YCL_LISTENER_EXECUTOR1 definition</span><br><span class="line">  public</span><br><span class="line">  final</span><br><span class="line">  create public .</span><br><span class="line"></span><br><span class="line">public section.</span><br><span class="line"></span><br><span class="line">  interfaces YIF_LISTENER .</span><br><span class="line"></span><br><span class="line">  methods CONSTRUCTOR</span><br><span class="line">    importing</span><br><span class="line">      value(IV_NAME) type STRING .</span><br><span class="line">protected section.</span><br><span class="line">private section.</span><br><span class="line">ENDCLASS.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CLASS YCL_LISTENER_EXECUTOR1 IMPLEMENTATION.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_LISTENER_EXECUTOR1-&gt;CONSTRUCTOR</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* | [---&gt;] IV_NAME                        TYPE        STRING</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  method CONSTRUCTOR.</span><br><span class="line"></span><br><span class="line">    YIF_LISTENER~MV_NAME = IV_NAME.</span><br><span class="line">  endmethod.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_LISTENER_EXECUTOR1-&gt;YIF_LISTENER~ON_STATUS_CHANGED</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  method YIF_LISTENER~ON_STATUS_CHANGED.</span><br><span class="line"></span><br><span class="line">    WRITE:/ |监听者1&#123; YIF_LISTENER~MV_NAME &#125;:接收到通知|.</span><br><span class="line"></span><br><span class="line">  endmethod.</span><br><span class="line">ENDCLASS.</span><br></pre></td></tr></table></figure>
+<h2 id="YCL-LISTENER-EXECUTOR2"><a href="#YCL-LISTENER-EXECUTOR2" class="headerlink" title="YCL_LISTENER_EXECUTOR2"></a>YCL_LISTENER_EXECUTOR2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">class YCL_LISTENER_EXECUTOR2 definition</span><br><span class="line">  public</span><br><span class="line">  final</span><br><span class="line">  create public .</span><br><span class="line"></span><br><span class="line">public section.</span><br><span class="line"></span><br><span class="line">  interfaces YIF_LISTENER .</span><br><span class="line"></span><br><span class="line">  methods CONSTRUCTOR</span><br><span class="line">    importing</span><br><span class="line">      value(IV_NAME) type STRING .</span><br><span class="line">protected section.</span><br><span class="line">private section.</span><br><span class="line">ENDCLASS.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CLASS YCL_LISTENER_EXECUTOR2 IMPLEMENTATION.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_LISTENER_EXECUTOR2-&gt;CONSTRUCTOR</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* | [---&gt;] IV_NAME                        TYPE        STRING</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  method CONSTRUCTOR.</span><br><span class="line"></span><br><span class="line">    YIF_LISTENER~MV_NAME = IV_NAME.</span><br><span class="line"></span><br><span class="line">  endmethod.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">* &lt;SIGNATURE&gt;---------------------------------------------------------------------------------------+</span><br><span class="line">* | Instance Public Method YCL_LISTENER_EXECUTOR2-&gt;YIF_LISTENER~ON_STATUS_CHANGED</span><br><span class="line">* +-------------------------------------------------------------------------------------------------+</span><br><span class="line">* +--------------------------------------------------------------------------------------&lt;/SIGNATURE&gt;</span><br><span class="line">  method YIF_LISTENER~ON_STATUS_CHANGED.</span><br><span class="line"></span><br><span class="line">    WRITE:/ |监听者2&#123; YIF_LISTENER~MV_NAME &#125;:接收到通知|.</span><br><span class="line"></span><br><span class="line">  endmethod.</span><br><span class="line">ENDCLASS.</span><br></pre></td></tr></table></figure>
+<h1 id="调用程序"><a href="#调用程序" class="headerlink" title="调用程序"></a>调用程序</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">*---5.观察者模式</span><br><span class="line">  DATA:</span><br><span class="line">    GO_TRIGGER TYPE REF TO YCL_TRIGGER,</span><br><span class="line">    GO_LISTENER_EXECUTOR1 TYPE REF TO YIF_LISTENER,</span><br><span class="line">    GO_LISTENER_EXECUTOR2 TYPE REF TO YIF_LISTENER.</span><br><span class="line"></span><br><span class="line">  GO_TRIGGER = NEW YCL_TRIGGER_MGMT( ).</span><br><span class="line"></span><br><span class="line">  GO_LISTENER_EXECUTOR1 = NEW YCL_LISTENER_EXECUTOR1( &apos;A1&apos; ).</span><br><span class="line">  GO_TRIGGER-&gt;ADD_LISTENER( GO_LISTENER_EXECUTOR1 ).</span><br><span class="line"></span><br><span class="line">  GO_LISTENER_EXECUTOR2 = NEW YCL_LISTENER_EXECUTOR2( &apos;B1&apos; ).</span><br><span class="line">  GO_TRIGGER-&gt;ADD_LISTENER( GO_LISTENER_EXECUTOR2 ).</span><br><span class="line"></span><br><span class="line">  GO_LISTENER_EXECUTOR2 = NEW YCL_LISTENER_EXECUTOR2( &apos;B2&apos; ).</span><br><span class="line">  GO_TRIGGER-&gt;ADD_LISTENER( GO_LISTENER_EXECUTOR2 ).</span><br><span class="line"></span><br><span class="line">  GO_LISTENER_EXECUTOR1 = NEW YCL_LISTENER_EXECUTOR1( &apos;A3&apos; ).</span><br><span class="line">  GO_TRIGGER-&gt;ADD_LISTENER( GO_LISTENER_EXECUTOR1 ).</span><br><span class="line"></span><br><span class="line">  GO_TRIGGER-&gt;DEL_LISTENER( GO_LISTENER_EXECUTOR1 ).</span><br><span class="line">  GO_TRIGGER-&gt;DEL_LISTENER( GO_LISTENER_EXECUTOR2 ).</span><br><span class="line"></span><br><span class="line">  GO_TRIGGER-&gt;POST_NOTICE( ).</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/Jackychen88/Picture/master/20200227144600.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ABAP/" rel="tag"># ABAP</a>
+          
+            <a href="/tags/OO/" rel="tag"># OO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/18/面向对象设计模式-适配器模式/" rel="next" title="面向对象设计模式-适配器模式">
+                <i class="fa fa-chevron-left"></i> 面向对象设计模式-适配器模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/18/面向对象设计模式-桥接模式/" rel="prev" title="面向对象设计模式-桥接模式">
+                面向对象设计模式-桥接模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Jacky chen">
+            
+              <p class="site-author-name" itemprop="name">Jacky chen</p>
+              <p class="site-description motion-element" itemprop="description">Record Life</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tongji.baidu.com/sc-web" title="Baidu" target="_blank">Baidu</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#观察者模式"><span class="nav-number">1.</span> <span class="nav-text">观察者模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CLASS-代码"><span class="nav-number">2.</span> <span class="nav-text">CLASS 代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#YCL-TRIGGER"><span class="nav-number">2.1.</span> <span class="nav-text">YCL_TRIGGER</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YIF-LISTENER"><span class="nav-number">2.2.</span> <span class="nav-text">YIF_LISTENER</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YCL-TRIGGER-MGMT"><span class="nav-number">2.3.</span> <span class="nav-text">YCL_TRIGGER_MGMT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YCL-LISTENER-EXECUTOR1"><span class="nav-number">2.4.</span> <span class="nav-text">YCL_LISTENER_EXECUTOR1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YCL-LISTENER-EXECUTOR2"><span class="nav-number">2.5.</span> <span class="nav-text">YCL_LISTENER_EXECUTOR2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调用程序"><span class="nav-number">3.</span> <span class="nav-text">调用程序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jacky chen</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count"></span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  Total:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
